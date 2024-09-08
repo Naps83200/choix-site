@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirection</title>
+    <script>
+        function logAccess() {
+            var tagId = new URLSearchParams(window.location.search).get('tag');
+            if (tagId) {
+                fetch('https://script.google.com/macros/s/AKfycbyJEcXzUDIQFnQFZVqA_WW6iIBjHBnm8k5nNx3wAyKPd7k0_gEgf8BTJbQhgBPgbF7T/exec', {
+                    method: 'POST',
+                    body: JSON.stringify({ event: 'NFC_Scan', tagId: tagId }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            }
+            // Rediriger vers votre page principale ou Instagram après un court délai
+            setTimeout(function() {
+                window.location.href = 'index.html'; // ou votre URL Instagram
+            }, 100);
+        }
+    </script>
+</head>
+<body onload="logAccess()">
+    <p>Redirection en cours...</p>
+</body>
+</html>
