@@ -7,7 +7,7 @@
         function logAccess() {
             var tagId = new URLSearchParams(window.location.search).get('tag');
             if (tagId) {
-                fetch('https://script.google.com/macros/s/AKfycbyJEcXzUDIQFnQFZVqA_WW6iIBjHBnm8k5nNx3wAyKPd7k0_gEgf8BTJbQhgBPgbF7T/exec', {
+                fetch('https://script.google.com/macros/s/AKfycbyynGAGpRayMrpM9YdAnsurynYOKBMoPZqBZnYmJme8HrcZ9H7hXDkuDKiMV-1tmD0u/exec', {
                     method: 'POST',
                     body: JSON.stringify({ event: 'NFC_Scan', tagId: tagId }),
                     headers: { 'Content-Type': 'application/json' }
