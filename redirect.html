@@ -8,7 +8,7 @@
             var tagId = new URLSearchParams(window.location.search).get('tag');
             if (tagId) {
                 console.log("Tag ID détecté:", tagId);
-                fetch('https://script.google.com/macros/s/VOTRE_ID_DE_DEPLOIEMENT/exec', {
+                fetch('https://script.google.com/macros/s/AKfycbxuimRXvS7bfGDrW4qc5LDGf1Kijn3XeALSrJietUHQCMjNTqH0WmiV0Ph5fYIJe6Mz/exec', {
                     method: 'POST',
                     body: JSON.stringify({ tagId: tagId }),
                     headers: { 'Content-Type': 'application/json' }
