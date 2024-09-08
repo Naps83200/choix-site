@@ -8,7 +8,7 @@
             var tagId = new URLSearchParams(window.location.search).get('tag');
             if (tagId) {
                 console.log("Tag ID détecté:", tagId);
-                var url = 'https://script.google.com/macros/s/VOTRE_ID_DE_DEPLOIEMENT/exec?tagId=' + encodeURIComponent(tagId);
+                var url = 'https://script.google.com/macros/s/AKfycbyhfCNDfA4dhiO4tgDEgkHNe45IkFwfjKtMgE4NP7y-9R1GQv2H0aZAWUNLCGSZ8qud?tagId=' + encodeURIComponent(tagId);
                 fetch(url, {
                     method: 'GET',
                 })
