@@ -1,37 +1,41 @@
 <!DOCTYPE html>
-   <html lang="fr">
-   <head>
-       <meta charset="UTF-8">
-       <title>Redirection</title>
-       <script>
-           function logAccess() {
-               var tagId = new URLSearchParams(window.location.search).get('tag');
-               if (tagId) {
-                   console.log("Tag ID détecté:", tagId);
-                   fetch('https://script.google.com/macros/s/AKfycbxuimRXvS7bfGDrW4qc5LDGf1Kijn3XeALSrJietUHQCMjNTqH0WmiV0Ph5fYIJe6Mz/exec', {
-                       method: 'POST',
-                       body: JSON.stringify({ tagId: tagId }),
-                       headers: { 'Content-Type': 'application/json' }
-                   })
-                   .then(response => response.text())
-                   .then(data => {
-                       console.log("Réponse du script:", data);
-                       // Redirection vers votre page principale ou Instagram
-                       window.location.href = 'index.html'; // ou votre URL Instagram
-                   })
-                   .catch(error => {
-                       console.error("Erreur:", error);
-                       alert("Une erreur s'est produite. Veuillez réessayer.");
-                   });
-               } else {
-                   console.log("Aucun Tag ID détecté");
-                   // Redirection immédiate si pas de tag
-                   window.location.href = 'index.html'; // ou votre URL Instagram
-               }
-           }
-       </script>
-   </head>
-   <body onload="logAccess()">
-       <p>Redirection en cours...</p>
-   </body>
-   </html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirection</title>
+    <script>
+        function logAccess() {
+            var tagId = new URLSearchParams(window.location.search).get('tag');
+            if (tagId) {
+                console.log("Tag ID détecté:", tagId);
+                fetch('https://script.google.com/macros/s/VOTRE_ID_DE_DEPLOIEMENT/exec', {
+                    method: 'POST',
+                    body: JSON.stringify({ tagId: tagId }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => {
+                    console.log("Statut de la réponse:", response.status);
+                    return response.text();
+                })
+                .then(data => {
+                    console.log("Réponse du script:", data);
+                    // Redirection vers votre page principale ou Instagram
+                    window.location.href = 'index.html'; // ou votre URL Instagram
+                })
+                .catch(error => {
+                    console.error("Erreur détaillée:", error);
+                    alert("Une erreur s'est produite. Détails: " + error.message);
+                });
+            } else {
+                console.log("Aucun Tag ID détecté");
+                // Redirection immédiate si pas de tag
+                window.location.href = 'index.html'; // ou votre URL Instagram
+            }
+        }
+    </script>
+</head>
+<body onload="logAccess()">
+    <p>Redirection en cours...</p>
+    <div id="error-message" style="color: red;"></div>
+</body>
+</html>
