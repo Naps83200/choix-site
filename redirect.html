@@ -1,26 +1,37 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Redirection</title>
-    <script>
-        function logAccess() {
-            var tagId = new URLSearchParams(window.location.search).get('tag');
-            if (tagId) {
-                fetch('https://script.google.com/macros/s/AKfycbyynGAGpRayMrpM9YdAnsurynYOKBMoPZqBZnYmJme8HrcZ9H7hXDkuDKiMV-1tmD0u/exec', {
-                    method: 'POST',
-                    body: JSON.stringify({ event: 'NFC_Scan', tagId: tagId }),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-            }
-            // Rediriger vers votre page principale ou Instagram après un court délai
-            setTimeout(function() {
-                window.location.href = 'index.html'; // ou votre URL Instagram
-            }, 100);
-        }
-    </script>
-</head>
-<body onload="logAccess()">
-    <p>Redirection en cours...</p>
-</body>
-</html>
+function doGet(e) {
+     Logger.log("Requête GET reçue");
+     return ContentService.createTextOutput("Ce script est conçu pour des requêtes POST.");
+   }
+
+   function doPost(e) {
+     Logger.log("Requête POST reçue");
+     var params = e ? JSON.parse(e.postData.contents) : {tagId: "TEST_TAG_ID"};
+     var tagId = params.tagId;
+     var timestamp = new Date().toLocaleString();
+     
+     Logger.log("Tag ID reçu: " + tagId);
+     
+     var emailAddress = "misteurnapster@gmail.com"; // Remplacez par votre adresse email
+     var subject = "Tag NFC scanné";
+     var message = "Le tag NFC avec l'ID " + tagId + " a été scanné le " + timestamp;
+     
+     try {
+       GmailApp.sendEmail(emailAddress, subject, message);
+       Logger.log("Email envoyé avec succès");
+       return ContentService.createTextOutput("Succès");
+     } catch (error) {
+       Logger.log("Erreur lors de l'envoi de l'email: " + error.toString());
+       return ContentService.createTextOutput("Erreur: " + error.toString());
+     }
+   }
+
+   // Fonction de test
+   function testDoPost() {
+     var testEvent = {
+       postData: {
+         contents: JSON.stringify({tagId: "TEST_TAG_ID"})
+       }
+     };
+     doPost(testEvent);
+   }
+   
