@@ -5,10 +5,17 @@
     <title>Redirection</title>
     <script>
         function logAccess() {
-            var tagId = new URLSearchParams(window.location.search).get('tag');
+            console.log("URL complète:", window.location.href);
+            var urlParams = new URLSearchParams(window.location.search);
+            console.log("Tous les paramètres URL:", Object.fromEntries(urlParams));
+            
+            var tagId = urlParams.get('tag');
+            console.log("Tag ID détecté:", tagId);
+            
             if (tagId) {
-                console.log("Tag ID détecté:", tagId);
-                var url = 'https://script.google.com/macros/s/AKfycbzOSL6WQiUYFs5agjwhxQVCoAk5seW3y2KHAm9y12xR3WxE-VEAPMDt0huWB0iS5cK3/exec?tagId=' + encodeURIComponent(tagId);
+                var url = 'https://script.google.com/macros/s/VOTRE_ID_DE_DEPLOIEMENT/exec?tagId=' + encodeURIComponent(tagId);
+                console.log("URL de l'appel au script:", url);
+                
                 fetch(url)
                 .then(response => {
                     console.log("Statut de la réponse:", response.status);
@@ -17,6 +24,7 @@
                 .then(data => {
                     console.log("Réponse du script:", data);
                     if (data.status === "success") {
+                        console.log("Redirection vers la page principale");
                         window.location.href = 'index.html'; // ou votre URL Instagram
                     } else {
                         throw new Error(data.message);
