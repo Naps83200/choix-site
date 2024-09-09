@@ -8,10 +8,8 @@
             var tagId = new URLSearchParams(window.location.search).get('tag');
             if (tagId) {
                 console.log("Tag ID détecté:", tagId);
-                var url = 'https://script.google.com/macros/s/AKfycbyhfCNDfA4dhiO4tgDEgkHNe45IkFwfjKtMgE4NP7y-9R1GQv2H0aZAWUNLCGSZ8qud?tagId=' + encodeURIComponent(tagId);
-                fetch(url, {
-                    method: 'GET',
-                })
+                var url = 'https://script.google.com/macros/s/AKfycbzOSL6WQiUYFs5agjwhxQVCoAk5seW3y2KHAm9y12xR3WxE-VEAPMDt0huWB0iS5cK3/exec?tagId=' + encodeURIComponent(tagId);
+                fetch(url)
                 .then(response => {
                     console.log("Statut de la réponse:", response.status);
                     return response.json();
