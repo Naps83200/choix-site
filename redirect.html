@@ -21,7 +21,7 @@
                 const emailData = `Carte scannée par ${clientName} (ID: ${tagId}) le ${timestamp}`;
                 
                 // URL de votre script Google
-                const scriptUrl = 'https://script.google.com/macros/s/VOTRE_ID_SCRIPT/exec';
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbx-1Frz7es53jfPVrf4jlUr1DyCgiUAR0GOOywEsqrtj7YDY2WyUO3g1GkoebbWuiAB/exec';
                 const url = `${scriptUrl}?email=yolivier83@hotmail.fr&message=${encodeURIComponent(emailData)}`;
 
                 await fetch(url, {
