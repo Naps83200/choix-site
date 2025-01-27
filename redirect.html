@@ -4,40 +4,59 @@
     <meta charset="UTF-8">
     <title>Redirection</title>
     <script>
-        function logAccess() {
-            console.log("URL complète:", window.location.href);
-            var urlParams = new URLSearchParams(window.location.search);
-            console.log("Tous les paramètres URL:", Object.fromEntries(urlParams));
-            
-            var tagId = urlParams.get('tag');
-            console.log("Tag ID détecté:", tagId);
+    async function logAccess() {
+        try {
+            // Récupérer l'ID de la carte depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const tagId = urlParams.get('tagId');
             
             if (tagId) {
-                var url = 'https://script.google.com/macros/s/AKfycbzOSL6WQiUYFs5agjwhxQVCoAk5seW3y2KHAm9y12xR3WxE-VEAPMDt0huWB0iS5cK3/exec?tagId=' + encodeURIComponent(tagId);
-                console.log("URL de l'appel au script:", url);
+                // Charger le fichier de configuration des cartes
+                const configResponse = await fetch('cards-config.json');
+                const cardConfig = await configResponse.json();
                 
-                fetch(url, {
+                // Récupérer le nom du client associé à l'ID
+                const clientName = cardConfig[tagId] || "Client inconnu";
+                
+                // Préparer les données pour l'email
+                const emailData = {
+                    to: "yolivier83@hotmail.fr",
+                    subject: "Scan de carte NFC",
+                    message: `Carte scannée : ${clientName} (ID: ${tagId})`,
+                    timestamp: new Date().toLocaleString()
+                };
+
+                // URL de votre script Google Apps avec les paramètres
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycb2KpxVi8GVrSS_jdMNqCcMksSSyZXKJwE1y1EAGM6rPQheD8l5c/exec';
+                const url = `${scriptUrl}?to=${encodeURIComponent(emailData.to)}&subject=${encodeURIComponent(emailData.subject)}&message=${encodeURIComponent(emailData.message)}`;
+
+                // Envoyer la requête pour l'email
+                await fetch(url, {
                     method: 'GET',
                     mode: 'no-cors'
-                })
-                .then(response => {
-                    console.log("Réponse reçue");
-                    // Redirection vers votre page principale ou Instagram
-                    window.location.href = 'index.html'; // ou votre URL Instagram
-                })
-                .catch(error => {
-                    console.error("Erreur détaillée:", error);
-                    document.getElementById('error-message').textContent = "Erreur: " + error.message;
                 });
+
+                console.log("Notification envoyée pour:", clientName);
+                
+                // Rediriger vers la page de choix après un court délai
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 500);
             } else {
-                console.log("Aucun Tag ID détecté");
-                document.getElementById('error-message').textContent = "Aucun Tag ID détecté";
+                console.log("Aucun ID détecté");
+                document.getElementById('error-message').textContent = "Aucun ID de carte détecté";
             }
+        } catch (error) {
+            console.error("Erreur:", error);
+            document.getElementById('error-message').textContent = "Erreur: " + error.message;
         }
+    }
     </script>
 </head>
 <body onload="logAccess()">
-    <p>Redirection en cours...</p>
-    <div id="error-message" style="color: red;"></div>
+    <div style="text-align: center; padding: 20px;">
+        <p>Redirection en cours...</p>
+        <div id="error-message" style="color: red;"></div>
+    </div>
 </body>
 </html>
