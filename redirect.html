@@ -6,45 +6,33 @@
     <script>
     async function logAccess() {
         try {
-            // Récupérer l'ID de la carte depuis l'URL
             const urlParams = new URLSearchParams(window.location.search);
             const tagId = urlParams.get('tagId');
             
             if (tagId) {
-                // Charger le fichier de configuration des cartes
-                const configResponse = await fetch('cards-config.json');
+                // Ajuster le chemin pour cards-config.json
+                const configResponse = await fetch('/site/cards-config.json');
                 const cardConfig = await configResponse.json();
                 
-                // Récupérer le nom du client associé à l'ID
                 const clientName = cardConfig[tagId] || "Client inconnu";
                 
-                // Préparer les données pour l'email
-                const emailData = {
-                    to: "yolivier83@hotmail.fr",
-                    subject: "Scan de carte NFC",
-                    message: `Carte scannée : ${clientName} (ID: ${tagId})`,
-                    timestamp: new Date().toLocaleString()
-                };
+                // Préparation de l'email
+                const timestamp = new Date().toLocaleString();
+                const emailData = `Carte scannée par ${clientName} (ID: ${tagId}) le ${timestamp}`;
+                
+                // URL de votre script Google
+                const scriptUrl = 'https://script.google.com/macros/s/VOTRE_ID_SCRIPT/exec';
+                const url = `${scriptUrl}?email=yolivier83@hotmail.fr&message=${encodeURIComponent(emailData)}`;
 
-                // URL de votre script Google Apps avec les paramètres
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycb2KpxVi8GVrSS_jdMNqCcMksSSyZXKJwE1y1EAGM6rPQheD8l5c/exec';
-                const url = `${scriptUrl}?to=${encodeURIComponent(emailData.to)}&subject=${encodeURIComponent(emailData.subject)}&message=${encodeURIComponent(emailData.message)}`;
-
-                // Envoyer la requête pour l'email
                 await fetch(url, {
                     method: 'GET',
                     mode: 'no-cors'
                 });
 
-                console.log("Notification envoyée pour:", clientName);
-                
-                // Rediriger vers la page de choix après un court délai
+                // Redirection vers index.html avec le bon chemin
                 setTimeout(() => {
-                    window.location.href = "index.html";
+                    window.location.href = "/site/index.html";
                 }, 500);
-            } else {
-                console.log("Aucun ID détecté");
-                document.getElementById('error-message').textContent = "Aucun ID de carte détecté";
             }
         } catch (error) {
             console.error("Erreur:", error);
